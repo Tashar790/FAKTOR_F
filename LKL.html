@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>صورتحساب فروش كالا و خدمات</title>
+  <style>
+    @page { size: A4 landscape; margin: 5mm; }
+    body { font-family: Tahoma, sans-serif; margin: 0; padding: 0; font-size: 13px; line-height: 1.4; color: #000; direction: rtl; }
+    .container { width: 100%; padding: 5px; box-sizing: border-box; }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .header .info { 
+      text-align: left; 
+      font-size: 11px; 
+      line-height: 1.2;
+      margin-left: auto;
+    }
+    .header .info div { margin-bottom: 3px; }
+    .header .title { 
+      flex: 1; 
+      text-align: center; 
+      font-weight: bold; 
+      font-size: 20px;
+      margin: 0 10px;
+    }
+    .section { border: 1px solid #000; padding: 6px; margin-bottom: 6px; page-break-inside: avoid; }
+    .section .sec-title { text-align: center; font-weight: bold; margin-bottom: 4px; font-size: 14px; }
+    .row { display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 4px; }
+    .field { display: flex; align-items: center; flex: 1 1 30%; min-width: 120px; margin-bottom: 2px; }
+    .field label { white-space: nowrap; margin-right: 4px; font-weight: bold; font-size: 11px; }
+    .field input { flex: 1; border: none; border-bottom: 1px dotted #000; background-color: transparent; font-size: 11px; padding: 1px 3px; font-family: inherit; color: #000; }
+    input:focus { outline: none; }
+    .table-container { overflow-x: auto; margin-bottom: 6px; }
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    table, th, td { border: 1px solid #000; }
+    th, td { padding: 3px; text-align: center; font-size: 11px; word-wrap: break-word; }
+    th {
+      background-color: #e0f7fa;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    table input { width: 100%; box-sizing: border-box; border: none; background: transparent; text-align: center; font-size: 11px; padding: 0; direction: ltr; }
+    .checkboxes { margin-top: 2px; display: flex; align-items: center; }
+    .checkboxes label { margin-left: 8px; font-size: 11px; }
+    .notes-field { display: flex; align-items: center; margin-left: 8px; }
+    .notes-field label { margin-right: 4px; font-size: 11px; font-weight: bold; }
+    .signatures { display: flex; justify-content: space-between; margin-top: 8px; }
+    .sign-box { width: 45%; text-align: center; padding-top: 2px; border-top: 1px solid #000; font-size: 11px; }
+    .print-btn, .add-row-btn { text-align: center; margin-top: 4px; page-break-after: avoid; }
+    button { padding: 3px 6px; font-size: 11px; cursor: pointer; }
+    @media print {
+      .print-btn, .add-row-btn { display: none; }
+      html, body { margin: 0; padding: 0; }
+      input { border: none !important; background: none !important; }
+      #invoiceTable th:last-child, 
+      #invoiceTable td:last-child { 
+        display: none !important; 
+      }
+    }
+    /* تنظیم عرض ستون‌ها */
+    #invoiceTable th:nth-child(1), 
+    #invoiceTable td:nth-child(1) { 
+      width: 40px; 
+      text-align: center;
+    }
+    #invoiceTable th:nth-child(2), 
+    #invoiceTable td:nth-child(2) { width: 7%; }
+    #invoiceTable th:nth-child(3), 
+    #invoiceTable td:nth-child(3) { 
+      width: 25%; 
+      text-align: right;
+      padding-right: 10px;
+      padding-left: 5px;
+    }
+    #invoiceTable th:nth-child(4), 
+    #invoiceTable td:nth-child(4) { width: 4.5%; }
+    #invoiceTable th:nth-child(5), 
+    #invoiceTable td:nth-child(5) { width: 4.5%; }
+    #invoiceTable th:nth-child(6), 
+    #invoiceTable td:nth-child(6) { width: 9%; }
+    #invoiceTable th:nth-child(7), 
+    #invoiceTable td:nth-child(7) { width: 11%; }
+    #invoiceTable th:nth-child(8), 
+    #invoiceTable td:nth-child(8) { width: 9%; }
+    #invoiceTable th:nth-child(9), 
+    #invoiceTable td:nth-child(9) { width: 11%; }
+    #invoiceTable th:nth-child(10), 
+    #invoiceTable td:nth-child(10) { width: 11%; }
+    #invoiceTable th:nth-child(11), 
+    #invoiceTable td:nth-child(11) { width: 13%; }
+    #invoiceTable th:nth-child(12),
+    #invoiceTable td:nth-child(12) { width: 40px; }
+    #invoiceTable td, #invoiceTable th {
+      white-space: normal;
+      vertical-align: top;
+      height: auto;
+      min-height: 25px;
+    }
+    #notes {
+      width: 100% !important;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="title"><input type="text" id="invoiceTitle" value="صورت حساب فروش كالا و خدمات" style="text-align: center; width: 100%; border: none; font-weight: bold; font-size: 20px; background: transparent;"></div>
+    <div class="info">
+      <div>شماره سريال: <input type="text" style="width:90px; color: red; font-weight: bold; direction: ltr; text-align: left;"></div>
+      <div>تاريخ: <input type="text" style="width:90px; color: red; font-weight: bold; direction: ltr; text-align: left;"></div>
+    </div>
+  </div>  
+  <div class="section">
+    <div class="sec-title">مشخصات فروشنده</div>
+    <div class="row">
+      <div class="field"><label>نام شخص حقيقي / حقوقي :</label><input type="text"></div>
+      <div class="field"><label>شماره اقتصادي :</label><input type="text"></div>
+      <div class="field"><label>شماره ثبت :</label><input type="text"></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>نشاني كامل _استان :</label><input type="text"></div>
+      <div class="field"><label>شهرستان :</label><input type="text"></div>
+      <div class="field"><label>آدرس کامل :</label><input type="text"></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>کد پستی :</label><input type="text"></div>
+      <div class="field"><label>شماره ملي :</label><input type="text"></div>
+      <div class="field"><label>تلفن/نمابر :</label><input type="text"></div>
+    </div>
+  </div>  
+  <div class="section">
+    <div class="sec-title">مشخصات خريدار</div>
+    <div class="row">
+      <div class="field"><label>نام شخص حقيقي / حقوقي :</label><input type="text"></div>
+      <div class="field"><label>شماره اقتصادي :</label><input type="text"></div>
+      <div class="field"><label>شماره ثبت :</label><input type="text"></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>نشاني كامل_ استان :</label><input type="text"></div>
+      <div class="field"><label>شهرستان :</label><input type="text"></div>
+      <div class="field"><label>آدرس کامل :</label><input type="text"></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>کد پستی :</label><input type="text"></div>
+      <div class="field"><label>شماره ملي :</label><input type="text"></div>
+      <div class="field"><label>تلفن/نمابر :</label><input type="text"></div>
+    </div>
+  </div>  
+  <div class="section">
+    <div class="sec-title">مشخصات كالا يا خدمات</div>
+    <div class="table-container">
+      <table id="invoiceTable">
+        <thead>
+          <tr>
+            <th>رديف</th>
+            <th>شناسه كالا</th>
+            <th>شرح كالا يا خدمات</th>
+            <th>مقدار</th>
+            <th>واحد</th>
+            <th>مبلغ واحد (﷼)</th>
+            <th>مبلغ كل (﷼)</th>
+            <th>مبلغ تخفيف (﷼)</th>
+            <th>مبلغ پس از تخفيف (﷼)</th>
+            <th>جمع ماليات و عوارض (﷼)</th>
+            <th>جمع كل بعلاوه ماليات و عوارض (﷼)</th>
+            <th>حذف</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="number" class="qty"></td>
+            <td><input type="text" class="measure"></td>
+            <td><input type="text" class="unitPrice"></td>
+            <td><input type="text" class="total" readonly></td>
+            <td><input type="text" class="discount"></td>
+            <td><input type="text" class="afterDiscount" readonly></td>
+            <td><input type="text" class="tax" readonly></td>
+            <td><input type="text" class="grandTotal" readonly></td>
+            <td><button type="button" class="delete-row" onclick="deleteRow(this)">حذف</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <button type="button" class="add-row-btn" onclick="addRow()">افزودن سطر</button>
+    </div>
+  </div>  
+  <div class="section">
+    <div class="row">
+      <div class="field"><label>نرخ مالیات (%):</label><input id="taxRate" type="number" value="10"></div>
+      <div class="field"><label>قابل پرداخت جمــع كل :</label><input id="finalSum" type="text" readonly></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>مبلغ کل به حروف:</label><input id="totalInWords" type="text" readonly style="width: 100%;"></div>
+    </div>
+    <div class="checkboxes">
+      <label>شرایط فروش :</label>	
+      <label><input type="checkbox"> نقدي</label>
+      <label><input type="checkbox"> غير نقدي</label>
+      <div class="notes-field"><label for="notes">توضيحات:</label><input type="text" id="notes" style="width: 200px;"></div>
+    </div>
+  </div>  
+  <div class="signatures">
+    <div class="sign-box">مهر و امضاء فروشنده :</div>
+    <div class="sign-box">مهر و امضاء خريدار :</div>
+  </div>  
+  <div class="print-btn">
+    <button onclick="window.print()">چاپ صورت‌حساب</button>
+  </div>
+</div>
+<script>
+  // تبدیل عدد به حروف فارسی
+  function numberToWords(num) {
+    const units = ["", "یک", "دو", "سه", "چهار", "پنج", "شش", "هفت", "هشت", "نه", "ده", "یازده", "دوازده", "سیزده", "چهارده", "پانزده", "شانزده", "هفده", "هجده", "نوزده"];
+    const tens = ["", "", "بیست", "سی", "چهل", "پنجاه", "شصت", "هفتاد", "هشتاد", "نود"];
+    const hundreds = ["", "یکصد", "دویست", "سیصد", "چهارصد", "پ пятصد", "ششصد", "هفتصد", "هشتصد", "نهصد"];
+    const thousands = ["", " هزار", " میلیون", " میلیارد"];
+
+    if (num === 0) return "صفر";
+    if (num < 0) return "منفی " + numberToWords(-num);
+    
+    let result = "";
+    let thousandCount = 0;
+    
+    while (num > 0) {
+      let part = num % 1000;
+      if (part > 0) {
+        let partResult = "";
+        
+        if (part >= 100) {
+          partResult += hundreds[Math.floor(part / 100)];
+          part %= 100;
+          if (part > 0) partResult += " و ";
+        }
+        
+        if (part >= 20) {
+          partResult += tens[Math.floor(part / 10)];
+          part %= 10;
+          if (part > 0) partResult += " و ";
+        }
+        
+        if (part > 0) {
+          partResult += units[part];
+        }
+        
+        result = partResult + thousands[thousandCount] + (result ? " و " + result : "");
+      }
+      
+      num = Math.floor(num / 1000);
+      thousandCount++;
+    }
+    
+    return result;
+  }
+
+  function formatNumber(num) {
+    return num.toLocaleString('en-US');
+  }
+
+  function cleanNumber(str) {
+    return parseFloat(str.replace(/,/g, '')) || 0;
+  }
+
+  function recalcRow(row) {
+    const qty = cleanNumber(row.querySelector('.qty').value);
+    const price = cleanNumber(row.querySelector('.unitPrice').value);
+    const discount = cleanNumber(row.querySelector('.discount').value);
+    const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+    const total = qty * price;
+    const after = total - discount;
+    const tax = after * (taxRate / 100);
+    const grand = after + tax;
+    row.querySelector('.total').value = formatNumber(total);
+    row.querySelector('.afterDiscount').value = formatNumber(after);
+    row.querySelector('.tax').value = formatNumber(tax);
+    row.querySelector('.grandTotal').value = formatNumber(grand);
+  }
+
+  function recalcAll() {
+    document.querySelectorAll('#invoiceTable tbody tr').forEach(recalcRow);
+    let sum = 0;
+    document.querySelectorAll('.grandTotal').forEach(inp => sum += cleanNumber(inp.value));
+    document.getElementById('finalSum').value = formatNumber(sum);
+    
+    // محاسبه مبلغ به حروف
+    const words = numberToWords(sum);
+    document.getElementById('totalInWords').value = words + " ریال";
+  }
+
+  function addRow() {
+    const tbody = document.querySelector('#invoiceTable tbody');
+    const rowCount = tbody.rows.length + 1;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${rowCount}</td>
+      <td><input type="text"></td>
+      <td><input type="text"></td>
+      <td><input type="number" class="qty"></td>
+      <td><input type="text" class="measure"></td>
+      <td><input type="text" class="unitPrice"></td>
+      <td><input type="text" class="total" readonly></td>
+      <td><input type="text" class="discount"></td>
+      <td><input type="text" class="afterDiscount" readonly></td>
+      <td><input type="text" class="tax" readonly></td>
+      <td><input type="text" class="grandTotal" readonly></td>
+      <td><button type="button" class="delete-row" onclick="deleteRow(this)">حذف</button></td>
+    `;
+    tbody.appendChild(tr);
+    recalcAll();
+  }
+
+  function deleteRow(button) {
+    const row = button.closest('tr');
+    row.remove();
+    
+    // بازشماری ردیف‌ها
+    document.querySelectorAll('#invoiceTable tbody tr').forEach((tr, index) => {
+      tr.cells[0].textContent = index + 1;
+    });
+    
+    recalcAll();
+  }
+
+  document.addEventListener('input', e => {
+    if (e.target.matches('.unitPrice') || e.target.matches('.discount')) {
+      const clean = e.target.value.replace(/[^\d]/g, '');
+      e.target.value = formatNumber(parseFloat(clean) || 0);
+      recalcAll();
+    } else if (e.target.closest('table') || e.target.id === 'taxRate') {
+      recalcAll();
+    }
+  });
+
+  window.onload = recalcAll;
+</script>
+</body>
+</html>
